@@ -23,7 +23,6 @@ def run_scraper():
     total_participants = page_props.get('totalParticipants', [])
 
     all_teams = []
-    hackathon_info = {}
     for idx, team in enumerate(teams, start=1):
         team_name = team["Name"]
         team_members = []
@@ -52,10 +51,13 @@ def run_scraper():
             "pending_no": len(pending_members),
             "pending_members": pending_members
         })
-        hackathon_info["teams"] = len(teams)
-        hackathon_info["total_participants"] = total_participants
-        hackathon_info["all teams"] = all_teams
+    hackathon_info = {
+    "number of all teams": len(teams),
+    "number of participants": total_participants,
+    "teams": all_teams
+    }
 
+    # return jsonify(hackathon_info)
     return jsonify(hackathon_info)
 
 if __name__ == "__main__":
