@@ -9,8 +9,8 @@ app = Flask(__name__)
 TOKEN = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjJiN2JhZmIyZjEwY2FlMmIxZjA3ZjM4MTZjNTQyMmJlY2NhNWMyMjMiLCJ0eXAiOiJKV1QifQ"
 HEADERS = {"Authorization": f"Bearer {TOKEN}"}
 
-@app.route("/")
-def run_scraper():
+
+def main_data():
     url = "https://hackathon.twisminds.gg/hackathon"
     response = requests.get(url, headers=HEADERS)
 
@@ -58,7 +58,20 @@ def run_scraper():
     }
 
     # return jsonify(hackathon_info)
-    return jsonify(hackathon_info)
+    return hackathon_info
+
+@app.route("/")
+def all_data():
+    data = main_data()
+    return jsonify(data)
+
+@app.route("/evolve")
+def evolve():
+    data = main_data()
+    for i in data["teams"]:
+        if i["team_name"] == "Evolve":
+            return jsonify(i)
+
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5005)
+    app.run(host="0.0.0.0", port=5006)
