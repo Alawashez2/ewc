@@ -77,6 +77,7 @@ def pending():
     all_pending = []
     data = main_data()
     has_team_number = 0
+    has_team_list = []
     for team in data["teams"]:
         for member in team["pending_members"]:
             name = member["name"]
@@ -96,6 +97,7 @@ def pending():
                         if person["name"] == name:
                             has_team = item["team_name"]
                             has_team_number +=1
+                            has_team_list.append(name)
                             break
                 new_item = {
                     "name" : name,
@@ -108,8 +110,9 @@ def pending():
                         
                 
     pending_data = {
-        "has_team_number" : has_team_number,
         "all_pending_members" : len(all_pending),
+        "has_team_number" : has_team_number,
+        "has_team" : has_team_list,
         "list" : all_pending
     }
                     
