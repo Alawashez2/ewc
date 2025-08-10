@@ -72,6 +72,51 @@ def evolve():
         if i["team_name"] == "Evolve":
             return jsonify(i)
 
+@app.route("/pending")
+def pending():
+    all_pending = []
+    data = main_data()
+    has_team_number = 0
+    for team in data["teams"]:
+        for member in team["pending_members"]:
+            name = member["name"]
+            
+            found = False
+            for map in all_pending:
+                if map["name"] == name:
+                    map["count"] +=1
+                    map["pending_request"].append(team["team_name"])
+                    found = True
+                    break
+                
+            if not found:
+                has_team = "NO"
+                for item in data["teams"]:
+                    for person in item["members"]:
+                        if person["name"] == name:
+                            has_team = item["team_name"]
+                            has_team_number +=1
+                            break
+                new_item = {
+                    "name" : name,
+                    "count" : 1,
+                    "has_team" : has_team,
+                    "pending_request" : [team["team_name"]],
+                }
+                all_pending.append(new_item)
+                
+                        
+                
+    pending_data = {
+        "has_team_number" : has_team_number,
+        "all_pending_members" : len(all_pending),
+        "list" : all_pending
+    }
+                    
+    return jsonify(pending_data)
+                
+            
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5006)
